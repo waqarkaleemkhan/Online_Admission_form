@@ -1,0 +1,60 @@
+/**
+ * File : Signup.js
+ * 
+ * This file contain the validation of SignUp form
+ * 
+ * Using validation plugin : jquery.validate.js
+ * 
+ * @author Muhammad Talha khan
+ */
+
+$(document).ready(function(){
+	
+	var addUserForm = $("#signup");
+	
+	var validator = addUserForm.validate({
+		
+		rules:{
+			name :{ required : true },
+			email : { required : true, email : true, remote : { url : 'http://admission.iiu.edu.pk/signup/' + "checkEmailExists", type :"post"} },
+			password : { required : true, minlength: 6	},
+			cpassword : {required : true, equalTo: "#password", minlength: 6},
+			cnic : { required : true, minlength: 4, remote : { url : 'http://admission.iiu.edu.pk/signup/' + "checkCnicExists", type :"post"} },
+			gender : { required : true, selected : true},
+			applyingfor : { required : true, selected : true},
+			nationality : { required : true, selected : true}
+		},
+		messages:{
+			name :{ required : "This field is required" },
+			email : { required : "This field is required", email : "Please enter valid email address", remote : "Email already taken" },
+			password : { required : "This field is required", length: "must be at least 6 characters" },
+			cpassword : {required : "This field is required", equalTo: "Please enter same password" },
+			cnic : { required : "This field is required", length: "must be at least 4 characters", remote : "CNIC already Existed" },//digits : "Please enter numbers only" },
+			gender : { required : "This field is required", selected : "Please select atleast one option" },
+			applyingfor : { required : "This field is required", selected : "Please select atleast one option" },
+			nationality : { required : "This field is required", selected : "Please select atleast one option" }			
+		}
+	});
+});
+
+$("#name").bind("keypress", function (event) {
+    if (event.charCode!=0) {
+        var regex = new RegExp("^[a-zA-Z ]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    }
+});
+
+$("#cnic").bind("keypress", function (event) {
+    if (event.charCode!=0) {
+        var regex = new RegExp("^[a-zA-Z_0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    }
+});
